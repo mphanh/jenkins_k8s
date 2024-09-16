@@ -1,6 +1,10 @@
 # Use the centos/httpd image
 FROM centos/httpd
 
+# Fix the mirrorlist issue by using a valid Vault repository
+RUN sed -i 's|mirrorlist=http://mirrorlist.centos.org|#mirrorlist=http://mirrorlist.centos.org|' /etc/yum.repos.d/CentOS-Base.repo && \
+    sed -i 's|#baseurl=http://mirror.centos.org/centos/$releasever|baseurl=http://vault.centos.org/centos/7|' /etc/yum.repos.d/CentOS-Base.repo
+
 # Install wget to download the website template
 RUN yum -y install wget unzip
 
