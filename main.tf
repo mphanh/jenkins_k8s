@@ -52,15 +52,15 @@ resource "aws_instance" "jenkins_server" {
 }
 
 data "template_file" "k8s" {
-  template = file("k8s.sh")
+  template = file("k8s-server.sh")
 }
 
 data "template_file" "jenkins" {
-  template = file("jenkins.sh")
+  template = file("jenkins-server.sh")
 }
 
 data "template_file" "ansible" {
-  template = file("ansible.sh")
+  template = file("ansible-server.sh")
 }
 
 resource "aws_security_group" "sg" {
