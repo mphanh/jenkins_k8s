@@ -1,8 +1,8 @@
 FROM centos/httpd
 
-ADD https://www.free-css.com/assets/files/free-css-templates/download/page254/photogenic.zip /var/www/html/
+ADD https://www.tooplate.com/download/2137_barista_cafe /var/www/html/
 WORKDIR /var/www/html/
-RUN yum install -y unzip && unzip photogenic.zip && rm photogenic.zip
+RUN yum install -y unzip && unzip 2137_barista_cafe.zip && rm 2137_barista_cafe.zip
 
 EXPOSE 80
 

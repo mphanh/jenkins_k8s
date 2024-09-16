@@ -23,7 +23,7 @@ resource "aws_instance" "k8s_cluster" {
     instance_type = local.k8s_instance_type
     key_name = local.key_name
     vpc_security_group_ids = [aws_security_group.sg.id]
-    user_data = data.template.k8s.rendered
+    user_data = data.template_file.k8s.rendered
     tags = {
         Name = "k8s_cluster"
     }
@@ -34,7 +34,7 @@ resource "aws_instance" "ansible_server" {
     instance_type = local.instance_type
     key_name = local.key_name
     vpc_security_group_ids = [aws_security_group.sg.id]
-    user_data = data.template.ansible.rendered
+    user_data = data.template_file.ansible.rendered
     tags = {
         Name = "ansible_server"
     }
@@ -45,21 +45,21 @@ resource "aws_instance" "jenkins_server" {
     instance_type = local.instance_type
     key_name = local.key_name
     vpc_security_group_ids = [aws_security_group.sg.id]
-    user_data = data.template.jenkins.rendered
+    user_data = data.template_file.jenkins.rendered
     tags = {
         Name = "jenkins_server"
     }
 }
 
-data "template" "k8s" {
+data "template_file" "k8s" {
     template = file("k8s.sh")
 }
 
-data "template" "jenkins" {
+data "template_file" "jenkins" {
     template = file("jenkins.sh")
 }
 
-data "template" "ansible" {
+data "template_file" "ansible" {
     template = file("ansible.sh")
 }
 
@@ -78,18 +78,24 @@ resource "aws_security_group" "sg" {
         from_port = 22
         to_port = 22
         protocol = "tcp"
-        cird_blocks = ["0.0.0.0/0"]
+        cidr_blocks = ["0.0.0.0/0"]
     }
     ingress {
         from_port = 80
         to_port = 80
         protocol = "tcp"
-        cird_blocks = ["0.0.0.0/0"]
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+        from_port = 8080
+        to_port = 8080
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
     }
     egress {
         from_port = 0
         to_port = 0
         protocol = "-1"
-        cird_blocks = ["0.0.0.0/0"]
+        cidr_blocks = ["0.0.0.0/0"]
     }
 }
